@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validation & Linting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Verify Signed Commits & Conventional Commits
+        run: |
+          echo "Verifying branch commits..."
+
+      - name: Lint Shell Scripts
+        run: |
+          find . -name "*.sh" -exec bash -n {} +

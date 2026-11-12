@@ -1,0 +1,12 @@
+{
+  "name": "tyyoj",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Toi Yêu Yuri Online Judge base orchestrator",
+  "author": "toiyeuyuriiiii & nmkdeveloper",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/toiyeuyuriiiiionlinejudge/tyyoj.git"
+  }
+}
