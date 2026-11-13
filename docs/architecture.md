@@ -19,25 +19,23 @@ This document details the system design, communication protocols, sandboxing mod
                                   | HTTPS / WebSocket                               | HTTPS / WebSocket
                                   v                                                 v
 +----------------------------------------------------------------------------------------------------+
-|                                    tyyoj-frontend (React 19 + Vite)                                |
+|                                         UNIFIED DOMAIN INGRESS                                     |
 |                                                                                                    |
-|  - Problem viewer (react-markdown, remark-math, rehype-katex, katex)                               |
-|  - Monaco Code Editor (C++, Pascal, Python3)                                                       |
-|  - Live Submissions & Standings Table                                                              |
-|  - Admin Judger Management Dashboard                                                               |
-+-------------------------------------------------+--------------------------------------------------+
-                                                  |
-                                                  | REST API (OpenAPI 3.1) / WebSocket
-                                                  v
-+----------------------------------------------------------------------------------------------------+
-|                                      tyyoj-backend (Rust + Axum)                                   |
-|                                                                                                    |
-|  - Auth & Security: Argon2id password hashing, JWT auth, SMTP email verification (Lettre)           |
-|  - Problem Management: Test case archives, Markdown statements, judge mode configuration          |
-|  - Submission Ingestion: Validates language/mode, pushes submission jobs to Redis queue            |
-|  - Admin Judger Fleet Orchestrator: Communicates with Docker Engine API via Bollard                |
-|    * Explicitly creates, starts, scales, inspects, and deletes persistent Judger containers        |
-+--------------------+----------------------------+---------------------------------+----------------+
+|  - Root / Static / SPA Paths ('/*')  ---------->  tyyoj-frontend (React 19 + Vite SPA)            |
+|  - API Paths ('/api/v{version}/*', '/health') ->  tyyoj-backend (Rust Axum Engine)                 |
++---------------------------------+-------------------------------------------------+----------------+
+                                  |                                                 |
+                                  | Serves UI & KaTeX Assets                        | Dispatches API
+                                  v                                                 v
++----------------------------------------------------+   +-------------------------------------------+
+|          tyyoj-frontend (React 19 + Vite)          |   |        tyyoj-backend (Rust + Axum)        |
+|                                                    |   |                                           |
+| - Problem viewer (Markdown + KaTeX Math)           |   | - Auth: Argon2id + JWT + SMTP Lettre      |
+| - Monaco Code Editor (C++, Pascal, Python3)        |   | - Problem & Testcase CRUD                 |
+| - Live Submissions & Scoreboard                    |   | - Bollard Docker Engine Provisioner       |
+| - Admin Judger Fleet Control Panel                 |   | - Redis Submission Queue Ingestion        |
++----------------------------------------------------+   +-----+-------------------------+-----+-----+
+                                                               |                         |     |
                      |                            |                                 |
         SQL Queries  |               Redis Queue  |               Docker Engine API |
         (SQLx async) |               & Heartbeats |               (Unix Domain Sock)|
