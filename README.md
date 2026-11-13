@@ -3,7 +3,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![GitHub Org](https://img.shields.io/badge/org-toiyeuyuriiiiionlinejudge-purple.svg)](https://github.com/toiyeuyuriiiiionlinejudge)
 
-**Toi Yêu Yuri Online Judge (`tyyoj`)** is a high-security, multi-repository competitive programming online judge platform. It features Administrator-controlled persistent Docker judger worker provisioning, full Markdown + KaTeX math rendering, and multi-mode judging supporting Standard token/diff comparison, Custom Checkers with `testlib.h`, and Interactive tasks with bidirectional POSIX pipes.
+**Toi Yêu Yuri Online Judge (`tyyoj`)** is a high-security, multi-repository competitive programming online judge platform. It features Administrator-controlled persistent Podman judger worker provisioning, full Markdown + KaTeX math rendering, and multi-mode judging supporting Standard token/diff comparison, Custom Checkers with `testlib.h`, and Interactive tasks with bidirectional POSIX pipes.
 
 ---
 
@@ -13,9 +13,9 @@ The `tyyoj` platform is decomposed into modular, public repositories under the [
 
 | Repository | Tech Stack | Role & Responsibility |
 |---|---|---|
-| **[`tyyoj`](https://github.com/toiyeuyuriiiiionlinejudge/tyyoj)** | Docker Compose, Shell | Base orchestrator, local dev infrastructure, unified docs, and deployment manifests. |
+| **[`tyyoj`](https://github.com/toiyeuyuriiiiionlinejudge/tyyoj)** | Podman Compose, Shell | Base orchestrator, local dev infrastructure, unified docs, and deployment manifests. |
 | **[`tyyoj-contracts`](https://github.com/toiyeuyuriiiiionlinejudge/tyyoj-contracts)** | Rust 1.99.1, OpenAPI 3.1 | Shared data structures, DTOs, verdict enumerations, and API contracts. |
-| **[`tyyoj-backend`](https://github.com/toiyeuyuriiiiionlinejudge/tyyoj-backend)** | Rust (Axum, Tokio, SQLx, Bollard, Lettre) | Core REST API, persistent Docker Judger Engine provisioner, Redis queue dispatcher, and authentication. |
+| **[`tyyoj-backend`](https://github.com/toiyeuyuriiiiionlinejudge/tyyoj-backend)** | Rust (Axum, Tokio, SQLx, Bollard, Lettre) | Core REST API, persistent Podman Judger Engine provisioner, Redis queue dispatcher, and authentication. |
 | **[`tyyoj-judger`](https://github.com/toiyeuyuriiiiionlinejudge/tyyoj-judger)** | Rust daemon + C++20 Sandbox | Persistent worker daemon pulling jobs from Redis and executing untrusted submissions inside Linux sandboxes. |
 | **[`tyyoj-frontend`](https://github.com/toiyeuyuriiiiionlinejudge/tyyoj-frontend)** | React 19, TypeScript, Vite, TailwindCSS, KaTeX | Web interface for problem viewing with math expressions, code submissions, live verdicts, and Admin Judger fleet control. |
 
@@ -24,7 +24,7 @@ The `tyyoj` platform is decomposed into modular, public repositories under the [
 ## Key Features
 
 1. **Persistent Admin-Controlled Judger Fleet:**
-   Judgers do not spawn and terminate ephemerally. Administrators explicitly create, scale, inspect, start, stop, and destroy persistent `tyyoj-judger` container instances via the Admin GUI through the Docker Engine socket API (`bollard`).
+   Judgers do not spawn and terminate ephemerally. Administrators explicitly create, scale, inspect, start, stop, and destroy persistent `tyyoj-judger` container instances via the Admin GUI through the Podman Engine socket API (`/run/podman/podman.sock` via `bollard`).
 2. **Three Supported Contestant Languages:**
    - **C++:** Compiles with `g++ -std=c++20 -O2`.
    - **Pascal:** Compiles with Free Pascal `fpc -O2`.
@@ -42,7 +42,7 @@ The `tyyoj` platform is decomposed into modular, public repositories under the [
 
 ## Development Setup
 
-See [`docs/dev-setup.md`](docs/dev-setup.md) for complete local setup and Docker Compose instructions.
+See [`docs/dev-setup.md`](docs/dev-setup.md) for complete local setup and Podman Compose instructions.
 
 ---
 

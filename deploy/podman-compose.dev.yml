@@ -1,0 +1,34 @@
+services:
+  postgres:
+    image: docker.io/library/postgres:17
+    container_name: tyyoj-postgres-dev
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: tyyoj
+      POSTGRES_USER: tyyoj_user
+      POSTGRES_PASSWORD: tyyoj_dev_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data:Z
+
+  redis:
+    image: docker.io/library/redis:8-alpine
+    container_name: tyyoj-redis-dev
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data:Z
+
+  mailpit:
+    image: docker.io/axllent/mailpit:latest
+    container_name: tyyoj-mailpit-dev
+    restart: unless-stopped
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
+volumes:
+  postgres_data:
+  redis_data:
